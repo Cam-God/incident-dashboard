@@ -1,0 +1,9 @@
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T16:25:00Z",
+  "service": "web-api",
+  "level": "INFO",
+  "message": "User logged in successfully",
+  "user_id": "alice"
+}'

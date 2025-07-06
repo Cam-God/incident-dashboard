@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.anomaly_detector import is_anomalous
 import uvicorn
@@ -9,23 +10,59 @@ app = FastAPI()
 logs = []
 anomalies = []
 
+# For dev: Allow frontend to connect via WebSocket
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# WebSocket endpoint for real-time updates
+connected_clients = []
+
+@app.websocket("/ws/logs")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    connected_clients.append(websocket)
+    try:
+        while True:
+            await websocket.receive_text()  # keep the socket alive
+    except:
+        connected_clients.remove(websocket)
+
 @app.post("/logs")
 async def receive_logs(request: Request):
     try:
         payload = await request.json()
         logs.append(payload)
-        
+
+        # Check for anomaly
         if is_anomalous(payload):
             print("🚨 Anomaly detected:", payload)
             anomalies.append(payload)
-        
-        # print("Received log:", payload)  # Just reference for now
+
+        # 🔥 Broadcast log to connected WebSocket clients
+        disconnected_clients = []
+        for client in connected_clients:
+            try:
+                await client.send_json(payload)
+            except Exception as e:
+                print("WebSocket error:", e)
+                disconnected_clients.append(client)
+
+        # Clean up disconnected clients
+        for client in disconnected_clients:
+            connected_clients.remove(client)
+
         return {"message": "Log received", "log_count": len(logs)}
-        # Worked, with this console print in the running terminal: 
-        # Received log: {'timestamp': '2025-07-01T12:00:00Z', 'service': 'auth-service', 'level': 'ERROR', 'message': 'Failed login attempt', 'user_id': 'abc123'}
-        # INFO:     127.0.0.1:57682 - "POST /logs HTTP/1.1" 200 OK
+
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
+    
+    # TODO: Update anomalies list when anomaly is detected with new websocket approach.
+    # TODO: retrieve older logs if webpage is refreshed.
 
 @app.get("/logs")
 def get_logs():
