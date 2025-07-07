@@ -4,6 +4,10 @@ function LogsTable() {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
+    fetch("/logs")
+      .then((res) => res.json())
+      .then((data) => setLogs(data.logs || []));
+
     const socket = new WebSocket("ws://localhost:8000/ws/logs");
 
     socket.onmessage = (event) => {
