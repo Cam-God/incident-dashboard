@@ -61,9 +61,6 @@ async def receive_logs(request: Request):
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
     
-    # TODO: Update anomalies list when anomaly is detected with new websocket approach. (DONE*) Completed in anomaly_detector.py + filtering on frontend using same websocket connection
-    # TODO: retrieve older logs if webpage is refreshed. (DONE*) Completed on client side frontend
-
 @app.get("/logs")
 def get_logs():
     return {"logs": logs}

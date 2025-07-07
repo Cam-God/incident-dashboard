@@ -26,41 +26,60 @@ function AnomaliesPanel() {
   }, []);
 
   return (
-    <div className="p-4 mt-6 border border-red-500 rounded">
+    <div className="p-2 mt-6 border border-red-500 rounded">
       <h2 className="text-xl font-bold text-red-700 mb-2">Anomalies</h2>
       {anomalies.length === 0 ? (
         <p className="text-gray-600">No anomalies detected.</p>
       ) : (
-        <table className="table-auto w-full border border-red-500">
-          <thead>
-            <tr>
-              <th className="border px-2 py-1 border-red-300">Timestamp</th>
-              <th className="border px-2 py-1 border-red-300">Service</th>
-              <th className="border px-2 py-1 border-red-300">Level</th>
-              <th className="border px-2 py-1 border-red-300">Flag</th>
-              <th className="border px-2 py-1 border-red-300">Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {anomalies.map((log, index) => (
-              <tr key={index}>
-                <td className="border px-2 py-1 border-red-300">
-                  {log.timestamp}
-                </td>
-                <td className="border px-2 py-1 border-red-300">
-                  {log.service}
-                </td>
-                <td className="border px-2 py-1 border-red-300">{log.level}</td>
-                <td className="border px-2 py-1 font-semibold text-red-700 border-red-300">
-                  {log.flag || "No flag in scope"}
-                </td>
-                <td className="border px-2 py-1 font-semibold text-red-700 border-red-300">
-                  {log.message}
-                </td>
+        <div className="table-section">
+          <table className="table-auto w-full border border-red-500">
+            <thead>
+              <tr>
+                <th className="border px-1 py-1 border-red-300 small-text">
+                  Timestamp
+                </th>
+                <th className="border px-1 py-1 border-red-300 small-text">
+                  Service
+                </th>
+                <th className="border px-1 py-1 border-red-300 small-text">
+                  Level
+                </th>
+                <th className="border px-1 py-1 border-red-300 small-text">
+                  Flag
+                </th>
+                <th className="border px-1 py-1 border-red-300 small-text">
+                  Message
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {anomalies.map((log, index) => (
+                <tr key={index}>
+                  <td className="border px-1 border-red-300 small-text">
+                    {log.timestamp}
+                  </td>
+                  <td className="border px-1 border-red-300 small-text">
+                    {log.service}
+                  </td>
+                  <td className="border px-1 border-red-300 small-text">
+                    {log.level}
+                  </td>
+                  <td className="border px-1 font-semibold text-red-500 border-red-300 small-text">
+                    {log.flag || "No flag in scope"}
+                  </td>
+                  <td className="border px-1 font-semibold text-red-500 border-red-300 small-text">
+                    {log.message}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="page-section">
+            <div className="page-arrow">&lt;</div>
+            <div className="page-number">250</div>
+            <div className="page-arrow">&gt;</div>
+          </div>
+        </div>
       )}
     </div>
   );
