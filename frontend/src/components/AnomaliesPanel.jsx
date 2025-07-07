@@ -7,6 +7,22 @@ function AnomaliesPanel() {
     fetch("/anomalies")
       .then((res) => res.json())
       .then((data) => setAnomalies(data.anomalies || []));
+
+    const socket = new WebSocket("ws://localhost:8000/ws/logs");
+
+    socket.onmessage = (event) => {
+      const newLog = JSON.parse(event.data);
+
+      if (newLog.flag) {
+        setAnomalies((prev) => [...prev, newLog]);
+      }
+    };
+
+    socket.onopen = () => console.log("WebSocket connected to anomalies panel");
+    socket.onclose = () =>
+      console.log("WebSocket disconnected from anomalies panel");
+
+    return () => socket.close();
   }, []);
 
   return (
@@ -21,6 +37,7 @@ function AnomaliesPanel() {
               <th className="border px-2 py-1 border-red-300">Timestamp</th>
               <th className="border px-2 py-1 border-red-300">Service</th>
               <th className="border px-2 py-1 border-red-300">Level</th>
+              <th className="border px-2 py-1 border-red-300">Flag</th>
               <th className="border px-2 py-1 border-red-300">Message</th>
             </tr>
           </thead>
@@ -34,6 +51,9 @@ function AnomaliesPanel() {
                   {log.service}
                 </td>
                 <td className="border px-2 py-1 border-red-300">{log.level}</td>
+                <td className="border px-2 py-1 font-semibold text-red-700 border-red-300">
+                  {log.flag || "No flag in scope"}
+                </td>
                 <td className="border px-2 py-1 font-semibold text-red-700 border-red-300">
                   {log.message}
                 </td>

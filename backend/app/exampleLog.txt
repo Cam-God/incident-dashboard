@@ -7,3 +7,75 @@ curl -X POST http://localhost:8000/logs \
   "message": "User logged in successfully",
   "user_id": "alice"
 }'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T12:00:00Z",
+  "service": "payment-service",
+  "level": "INFO",
+  "message": "User viewed invoice",
+  "user_id": "user_001"
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T16:20:00Z",
+  "service": "billing-service",
+  "level": "INFO",
+  "message": "Payment gateway timeout",
+  "latency_ms": 2900
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T12:00:00Z",
+  "service": "auth-service",
+  "level": "ERROR",
+  "message": "Failed login attempt",
+  "user_id": "abc123"
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T15:00:00Z",
+  "service": "auth-service",
+  "level": "ERROR",
+  "message": "Unauthorized access attempt",
+  "user_id": "test-user"
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T16:20:00Z",
+  "service": "billing-service",
+  "level": "ERROR",
+  "message": "Payment gateway timeout",
+  "latency_ms": 5100
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T12:01:00Z",
+  "service": "payment-service",
+  "level": "ERROR",
+  "message": "Failed to process payment",
+  "latency_ms": 4200,
+  "user_id": "user_002"
+}'
+
+curl -X POST http://localhost:8000/logs \
+-H "Content-Type: application/json" \
+-d '{
+  "timestamp": "2025-07-01T12:01:00Z",
+  "service": "payment-service",
+  "level": "ERROR",
+  "message": "Failed to process payment",
+  "latency_ms": 4200,
+  "user_id": "andy"
+}'
