@@ -38,7 +38,7 @@ function AnomaliesPanel() {
   }, [anomalies, currentPage]);
 
   return (
-    <div className="p-2 mt-6 border border-red-500 rounded">
+    <div className="p-2 mt-6 border border-red-500 rounded anomalies-panel">
       <h2 className="text-xl font-bold text-red-700 mb-2">Anomalies</h2>
       {anomalies.length === 0 ? (
         <p className="text-gray-600">No anomalies detected.</p>

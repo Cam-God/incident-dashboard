@@ -9,6 +9,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+  width: 100%;
   background-color: #242424;
 
   font-synthesis: none;
@@ -144,3 +145,26 @@ button:focus-visible {
   cursor: default;
 }
 
+
+.main-container{
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: 100%;
+}
+
+.bar-chart{
+  height: 400px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.anomalies-panel{
+  width:50%;
+}
+
+.content{
+  width: 100vw;
+}

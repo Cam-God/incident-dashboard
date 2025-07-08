@@ -11,6 +11,8 @@
     "tailwind-init": "tailwindcss init -p"
   },
   "dependencies": {
+    "@nivo/bar": "^0.99.0",
+    "@nivo/core": "^0.99.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
