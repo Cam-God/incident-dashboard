@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Pagination from "./Pagniation";
 
 function AnomaliesPanel() {
   const [anomalies, setAnomalies] = useState([]);
@@ -35,14 +36,6 @@ function AnomaliesPanel() {
     const end = start + LOGS_PER_PAGE;
     setDisplayedLogs(anomalies.slice(start, end));
   }, [anomalies, currentPage]);
-
-  const handlePage = (direction) => {
-    if (direction === "prev" && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    } else if (direction === "next" && currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
 
   return (
     <div className="p-2 mt-6 border border-red-500 rounded">
@@ -95,37 +88,11 @@ function AnomaliesPanel() {
             </tbody>
           </table>
           {totalPages > 1 && (
-            <div className="page-section">
-              <div onClick={() => handlePage("prev")} className="page-arrow">
-                &lt;
-              </div>
-              {currentPage > 1 && (
-                <div
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  className="page-number"
-                >
-                  {currentPage - 1}
-                </div>
-              )}
-              <div className="page-number current-page-number">
-                {currentPage}
-              </div>
-              {totalPages > currentPage && (
-                <div
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  className="page-number"
-                >
-                  {currentPage + 1}
-                </div>
-              )}
-              <div
-                onClick={() => handlePage("next")}
-                disabled={currentPage === totalPages}
-                className="page-arrow"
-              >
-                &gt;
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           )}
         </div>
       )}

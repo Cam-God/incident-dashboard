@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Pagination from "./Pagniation";
 
 function LogsTable() {
   const [logs, setLogs] = useState([]);
@@ -32,14 +33,6 @@ function LogsTable() {
   }, [logs, currentPage]);
 
   const totalPages = Math.ceil(logs.length / LOGS_PER_PAGE);
-
-  const handlePage = (direction) => {
-    if (direction === "prev" && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    } else if (direction === "next" && currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
 
   return (
     <div className="p-1">
@@ -86,41 +79,11 @@ function LogsTable() {
           </table>
 
           {totalPages > 1 && (
-            <div className="page-section">
-              <div
-                onClick={() => handlePage("prev")}
-                disabled={currentPage === 1}
-                className="page-arrow"
-              >
-                &lt;
-              </div>
-              {currentPage > 1 && (
-                <div
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  className="page-number"
-                >
-                  {currentPage - 1}
-                </div>
-              )}
-              <div className="page-number current-page-number">
-                {currentPage}
-              </div>
-              {totalPages > currentPage && (
-                <div
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  className="page-number"
-                >
-                  {currentPage + 1}
-                </div>
-              )}
-              <div
-                onClick={() => handlePage("next")}
-                disabled={currentPage === totalPages}
-                className="page-arrow"
-              >
-                &gt;
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           )}
         </div>
       )}
